@@ -1,36 +1,41 @@
 <?php
 
-namespace Kanboard\Plugin\TaskBoardDate;
+namespace Kanboard\Plugin\Subtaskdate;
 
 use Kanboard\Core\Plugin\Base;
 use Kanboard\Core\Translator;
 use Kanboard\Model\TaskModel;
-use Kanboard\Plugin\TaskBoardDate\Filter\TaskBoardDateFilter;
-use Kanboard\Plugin\TaskBoardDate\Pagination\FutureTaskPagination;
+//use Kanboard\Plugin\Subtaskdate\Filter\SubTaskDueDateFilter; //Needs work
+use Kanboard\Model\SubtaskModel;
 use PicoDb\Table;
 
 class Plugin extends Base
 {
     public function initialize()
     {
-        $this->hook->on('formatter:board:query', array($this, 'applyDateFilter'));
-        $this->hook->on('pagination:dashboard:task:query', array($this, 'applyDateFilter'));
-        $this->hook->on('pagination:dashboard:subtask:query', array($this, 'applyDateFilter'));
-        $this->hook->on('model:task:creation:prepare', array($this, 'beforeSave'));
-        $this->hook->on('model:task:modification:prepare', array($this, 'beforeSave'));
+        
+        //Needs work
+        //$this->hook->on('formatter:board:query', array($this, 'applyDateFilter'));
 
-        $this->template->hook->attach('template:task:form:third-column', 'TaskBoardDate:task_creation/form');
-        $this->template->hook->attach('template:dashboard:sidebar', 'TaskBoardDate:dashboard/sidebar');
-        $this->template->hook->attachCallable('template:dashboard:show', 'TaskBoardDate:dashboard/show', function(array $user) {
-            return array(
-                'paginator' => FutureTaskPagination::getInstance($this->container)->getDashboardPaginator($user['id'], true)
-            );
-        });
+        //Model
+        $this->hook->on('model:subtask:creation:prepare', array($this, 'beforeSave'));
+        $this->hook->on('model:subtask:modification:prepare', array($this, 'beforeSave'));
 
-        $this->container->extend('taskLexer', function($taskLexer, $c) {
-            $taskLexer->withFilter(TaskBoardDateFilter::getInstance($c)->setDateParser($c['dateParser']));
-            return $taskLexer;
-        });
+        //Forms
+        $this->template->hook->attach('template:subtask:form:create', 'Subtaskdate:subtask/form');
+        $this->template->hook->attach('template:subtask:form:edit', 'Subtaskdate:subtask/form');
+
+        //Task Details
+        $this->template->hook->attach('template:subtask:table:header:before-timetracking', 'Subtaskdate:subtask/table_header');
+        $this->template->hook->attach('template:subtask:table:rows', 'Subtaskdate:subtask/table_rows');
+
+        //Dashboard
+        $this->template->hook->attach('template:dashboard:subtasks:header:before-timetracking', 'Subtaskdate:subtask/table_header');
+        $this->template->hook->attach('template:dashboard:subtasks:rows', 'Subtaskdate:subtask/table_rows');
+
+        //Board Tooltip
+        $this->template->hook->attach('template:board:tooltip:subtasks:header:before-assignee', 'Subtaskdate:subtask/table_header');
+        $this->template->hook->attach('template:board:tooltip:subtasks:rows', 'Subtaskdate:subtask/table_rows');
     }
 
     public function onStartup()
@@ -40,28 +45,28 @@ class Plugin extends Base
 
     public function beforeSave(array &$values)
     {
-        $values = $this->dateParser->convert($values, array('date_board'));
-        $this->helper->model->resetFields($values, array('date_board'));
+        $values = $this->dateParser->convert($values, array('due_date'));
+        $this->helper->model->resetFields($values, array('due_date'));
     }
 
     public function applyDateFilter(Table $query)
     {
-        $query->lte(TaskModel::TABLE.'.date_board', time());
+        $query->lte(SubtaskModel::TABLE.'.due_date', time());
     }
 
     public function getPluginName()
     {
-        return 'TaskBoardDate';
+        return 'Subtaskdate';
     }
 
     public function getPluginDescription()
     {
-        return t('Add a new date field for tasks to define the visibility on the board and dashboard');
+        return t('Add a new due date field to subtasks');
     }
 
     public function getPluginAuthor()
     {
-        return 'Frédéric Guillot';
+        return 'Manuel Raposo';
     }
 
     public function getPluginVersion()
