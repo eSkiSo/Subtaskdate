@@ -76,6 +76,6 @@ class Plugin extends Base
 
     public function getPluginHomepage()
     {
-        return 'https://github.com/kanboard/plugin-task-board-date';
+        return 'https://github.com/eSkiSo/Subtaskdate';
     }
 }
