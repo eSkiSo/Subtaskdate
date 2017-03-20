@@ -12,7 +12,7 @@ Author
 Requirements
 ------------
 
-- Kanboard >= 1.0.34
+- Kanboard >= 1.0.34 && < 1.0.41
 - PHP >= 5.3.3
 
 Installation
