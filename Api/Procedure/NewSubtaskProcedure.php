@@ -31,5 +31,28 @@ class NewSubtaskProcedure extends BaseProcedure
         list($valid, ) = $this->subtaskValidator->validateCreation($values);
         return $valid ? $this->subtaskModel->create($values) : false;
     }
+    
+    public function updateSubtaskdd($id, $task_id, $title = null, $user_id = null, $time_estimated = null, $time_spent = null, $status = null, $due_date = null)
+    {
+        TaskAuthorization::getInstance($this->container)->check($this->getClassName(), 'updateSubtask', $task_id);
+        
+        $values = array(
+            'id' => $id,
+            'task_id' => $task_id,
+            'title' => $title,
+            'user_id' => $user_id,
+            'time_estimated' => $time_estimated,
+            'time_spent' => $time_spent,
+            'status' => $status,
+            'due_date' => $due_date,
+        );
+        foreach ($values as $key => $value) {
+            if (is_null($value)) {
+                unset($values[$key]);
+            }
+        }
+        list($valid, ) = $this->subtaskValidator->validateApiModification($values);
+        return $valid && $this->subtaskModel->update($values);
+    }
 
 }
