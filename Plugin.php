@@ -5,9 +5,12 @@ namespace Kanboard\Plugin\Subtaskdate;
 use Kanboard\Core\Plugin\Base;
 use Kanboard\Core\Translator;
 use Kanboard\Model\TaskModel;
-//use Kanboard\Plugin\Subtaskdate\Filter\SubTaskDueDateFilter; //Needs work
+// use Kanboard\Plugin\Subtaskdate\Filter\SubTaskDueDateFilter; 
 use Kanboard\Model\SubtaskModel;
+use Kanboard\Plugin\Subtaskdate\Api\Procedure\NewSubtaskProcedure;
 use PicoDb\Table;
+use JsonRPC\Server;
+
 
 class Plugin extends Base
 {
@@ -36,8 +39,11 @@ class Plugin extends Base
         //Board Tooltip
         $this->template->hook->attach('template:board:tooltip:subtasks:header:before-assignee', 'Subtaskdate:subtask/table_header');
         $this->template->hook->attach('template:board:tooltip:subtasks:rows', 'Subtaskdate:subtask/table_rows');
+        
+        // API 
+        $this->api->getProcedureHandler()->withClassAndMethod('createSubtaskdd', new NewSubtaskProcedure($this->container), 'createSubtaskdd');
+        
     }
-
     public function onStartup()
     {
         Translator::load($this->languageModel->getCurrentLanguage(), __DIR__.'/Locale');
@@ -49,7 +55,7 @@ class Plugin extends Base
         $this->helper->model->resetFields($values, array('due_date'));
     }
 
-    public function applyDateFilter(Table $query)
+     public function applyDateFilter(Table $query)
     {
         $query->lte(SubtaskModel::TABLE.'.due_date', time());
     }
