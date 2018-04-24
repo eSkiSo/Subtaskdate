@@ -42,7 +42,7 @@ class Plugin extends Base
         
         // API 
         $this->api->getProcedureHandler()->withClassAndMethod('createSubtaskdd', new NewSubtaskProcedure($this->container), 'createSubtaskdd');
-        
+        $this->api->getProcedureHandler()->withClassAndMethod('updateSubtaskdd', new NewSubtaskProcedure($this->container), 'updateSubtaskdd');
     }
     public function onStartup()
     {
