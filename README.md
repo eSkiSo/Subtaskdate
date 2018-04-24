@@ -23,7 +23,6 @@ createSubtaskdd
 
 Request example:
 
-.. code:: json
 
     {
         "jsonrpc": "2.0",
@@ -38,7 +37,6 @@ Request example:
 
 Response example:
 
-.. code:: json
 
     {
         "jsonrpc": "2.0",
