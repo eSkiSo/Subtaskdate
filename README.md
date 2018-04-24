@@ -2,7 +2,7 @@ SubTask Due Date
 ===============
 
 - Adds a new due date field for subtasks.
-- Adds API Procedures for subtask due date field.
+- Adds API Procedures for subtask due date field, `createSubtaskdd` & `updateSubtaskdd`
 
 createSubtaskdd
 -------------
@@ -27,7 +27,7 @@ Request example:
 
     {
         "jsonrpc": "2.0",
-        "method": "createSubtask",
+        "method": "createSubtaskdd",
         "id": 2041554661,
         "params": {
             "task_id": 1,
@@ -70,7 +70,7 @@ Request example:
 
     {
         "jsonrpc": "2.0",
-        "method": "updateSubtask",
+        "method": "updateSubtaskdd",
         "id": 191749979,
         "params": {
             "id": 1,
