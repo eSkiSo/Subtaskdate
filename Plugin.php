@@ -62,7 +62,7 @@ class Plugin extends Base
 
     public function getPluginName()
     {
-        return 'Subtaskdate';
+        return 'Subtask Due Date';
     }
 
     public function getPluginDescription()
