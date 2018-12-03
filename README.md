@@ -2,12 +2,12 @@ SubTask Due Date
 ===============
 
 - Adds a new due date field for subtasks.
-- Adds API Procedures for subtask due date field, `createSubtaskdd` & `updateSubtaskdd`
-- Adds filter `subtask_due`
+- Adds [API](#api) Procedures for subtask due date field, [createSubtaskdd](#createSubtaskdd) & [updateSubtaskdd](#updateSubtaskdd)
+- Adds [filter](#filter) `subtask_due`
   - Chain-able, i.e. `subtask_due:today subtask:assignee:name` will filter for subtasks due `today`, assigned to `name`
   
-Filter
--------------
+## Filter
+
 **Search by the due date**
 
 
@@ -32,9 +32,9 @@ Operators supported with a date:
 -  Greater than or equal: **subtask_due:>=2015-06-29**
 -  Lower than or equal: **subtask_due:<=2015-06-29**
 
+## API
 
-createSubtaskdd
--------------
+### createSubtaskdd
 
 -  Purpose: **Create a new subtask**
 -  Parameters:
@@ -73,8 +73,7 @@ Response example:
         "result": 45
     }
 
-updateSubtaskdd
--------------
+### updateSubtaskdd
 
 -  Purpose: **Update a subtask**
 -  Parameters:
