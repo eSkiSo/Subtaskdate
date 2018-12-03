@@ -61,7 +61,6 @@ const TABLE = 'subtasks';
             ->table(self::TABLE)
             ->eq('due_date', 0)
             ->findAllByColumn('task_id');
-             return $this->query->in(TaskModel::TABLE.'.id', $duedate);
         } else {
             
             $method = $this->parseOperator();
@@ -83,7 +82,7 @@ const TABLE = 'subtasks';
                 ->lte('due_date', $timestamp + 86399)
                 ->findAllByColumn('task_id');
             }
-             return $this->query->in(TaskModel::TABLE.'.id', $duedate);
         }
+        if (isset($duedate) && !empty($duedate)) { return $this->query->in(TaskModel::TABLE.'.id', $duedate); } else { return $this->query->in(TaskModel::TABLE.'.id', [0]); }
     }
 }
