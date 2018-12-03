@@ -13,8 +13,7 @@ use PicoDb\Database;
  * Filter subtasks by due date
  *
  * @package filter
- * @todo NEEDS work
- * @author  Manuel Raposo
+ * @author  Craig Crosby
  */
 class SubTaskDueDateFilter extends BaseDateFilter implements FilterInterface
 {
