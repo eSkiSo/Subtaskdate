@@ -4,6 +4,7 @@ SubTask Due Date
 - Adds a new due date field for subtasks.
 - Adds API Procedures for subtask due date field, `createSubtaskdd` & `updateSubtaskdd`
 - Adds filter `subtask_due`, e.g. `subtask_due:none`, `subtask_due:12/12/2018`, `subtask_due:<=12/12/2018`, etc...
+  - Chain-able, i.e. `subtask_due:today subtask:assignee:name` will filter for subtasks due `today`, assigned to `name`
 
 createSubtaskdd
 -------------
