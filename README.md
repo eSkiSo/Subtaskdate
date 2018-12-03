@@ -3,8 +3,35 @@ SubTask Due Date
 
 - Adds a new due date field for subtasks.
 - Adds API Procedures for subtask due date field, `createSubtaskdd` & `updateSubtaskdd`
-- Adds filter `subtask_due`, e.g. `subtask_due:none`, `subtask_due:12/12/2018`, `subtask_due:<=2018-12-03`, etc...
+- Adds filter `subtask_due`
   - Chain-able, i.e. `subtask_due:today subtask:assignee:name` will filter for subtasks due `today`, assigned to `name`
+  
+Filter
+-------------
+**Search by the due date**
+
+
+Attribute: **subtask_due**
+
+-  Search tasks due today: ``subtask_due:today``
+-  Search tasks due tomorrow: ``subtask_due:tomorrow``
+-  Search tasks due yesterday: ``subtask_due:yesterday``
+-  Search tasks due with the exact date: ``subtask_due:2015-06-29``
+-  Search tasks without a due date: ``subtask_due:none``
+
+The date must use the ISO 8601 format: **YYYY-MM-DD**.
+
+All string formats supported by the ``strtotime()`` function are
+supported, for example ``next Thursday``, ``-2 days``, ``+2 months``,
+``tomorrow``, etc.
+
+Operators supported with a date:
+
+-  Greater than: **subtask_due:>2015-06-29**
+-  Lower than: **subtask_due:<2015-06-29**
+-  Greater than or equal: **subtask_due:>=2015-06-29**
+-  Lower than or equal: **subtask_due:<=2015-06-29**
+
 
 createSubtaskdd
 -------------
