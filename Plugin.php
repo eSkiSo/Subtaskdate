@@ -5,10 +5,11 @@ namespace Kanboard\Plugin\Subtaskdate;
 use Kanboard\Core\Plugin\Base;
 use Kanboard\Core\Translator;
 use Kanboard\Model\TaskModel;
-// use Kanboard\Plugin\Subtaskdate\Filter\SubTaskDueDateFilter; 
+use Kanboard\Plugin\Subtaskdate\Filter\SubTaskDueDateFilter; 
 use Kanboard\Model\SubtaskModel;
 use Kanboard\Plugin\Subtaskdate\Api\Procedure\NewSubtaskProcedure;
 use PicoDb\Table;
+use PicoDb\Database;
 use JsonRPC\Server;
 
 
@@ -16,9 +17,12 @@ class Plugin extends Base
 {
     public function initialize()
     {
-        
-        //Needs work
-        //$this->hook->on('formatter:board:query', array($this, 'applyDateFilter'));
+        //Filter
+        $this->container->extend('taskLexer', function($taskLexer, $c) {
+            $taskLexer->withFilter(SubTaskDueDateFilter::getInstance()->setDatabase($c['db'])
+                                                                      ->setDateParser($c['dateParser']));
+            return $taskLexer;
+        });
 
         //Model
         $this->hook->on('model:subtask:creation:prepare', array($this, 'beforeSave'));
@@ -77,7 +81,7 @@ class Plugin extends Base
 
     public function getPluginVersion()
     {
-        return '1.0.3';
+        return '1.0.4';
     }
 
     public function getPluginHomepage()
