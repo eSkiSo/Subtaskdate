@@ -9,8 +9,8 @@ use Kanboard\Api\Procedure\BaseProcedure;
 /**
  * Subtask API controller
  *
- * @package  Kanboard\Api\Procedure
- * @author   Frederic Guillot
+ * @package  Kanboard\Plugin\Subtaskdate
+ * @author   Craig Crosby
  */
 class NewSubtaskProcedure extends BaseProcedure
 {
