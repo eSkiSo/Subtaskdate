@@ -66,3 +66,4 @@ class SubtaskCalendarModel extends Base
          
          return $events;
     }
+}
