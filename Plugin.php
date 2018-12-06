@@ -59,7 +59,7 @@ class Plugin extends Base
         
         $this->hook->on('controller:calendar:project:events', function($project_id, $start, $end) use ($container) {
             $model = new SubtaskCalendarModel($container);
-            return $model->getUserCalendarEvents($project_id, $start, $end); // Return new events
+            return $model->getProjectCalendarEvents($project_id, $start, $end); // Return new events
         });
         
     }
