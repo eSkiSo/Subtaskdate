@@ -119,10 +119,10 @@ Response example:
     }
 
 
-Author
+Authors
 ------
 
-- Manuel Raposo
+- Manuel Raposo / Craig Crosby
 - License MIT
 
 Requirements
