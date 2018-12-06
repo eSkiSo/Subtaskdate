@@ -7,6 +7,7 @@ use Kanboard\Core\Translator;
 use Kanboard\Model\TaskModel;
 use Kanboard\Plugin\Subtaskdate\Filter\SubTaskDueDateFilter; 
 use Kanboard\Model\SubtaskModel;
+use Kanboard\Plugin\Subtaskdate\Model\SubtaskCalendarModel;
 use Kanboard\Plugin\Subtaskdate\Api\Procedure\NewSubtaskProcedure;
 use PicoDb\Table;
 use PicoDb\Database;
