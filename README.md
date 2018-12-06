@@ -2,6 +2,7 @@ SubTask Due Date
 ===============
 
 - Adds a new due date field for subtasks.
+- Adds Calendar Events for Subtasks to User and Project Calendars.
 - Adds [API](#api) Procedures for subtask due date field, [createSubtaskdd](#createSubtaskdd) & [updateSubtaskdd](#updateSubtaskdd)
 - Adds [filter](#filter) `subtask_due`
   - Chain-able, i.e. `subtask_due:today subtask:assignee:name` will filter for subtasks due `today`, assigned to `name`
