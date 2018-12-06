@@ -7,6 +7,7 @@ use Kanboard\Core\Translator;
 use Kanboard\Model\TaskModel;
 use Kanboard\Plugin\Subtaskdate\Filter\SubTaskDueDateFilter; 
 use Kanboard\Model\SubtaskModel;
+use Kanboard\Plugin\Subtaskdate\Model\SubtaskCalendarModel;
 use Kanboard\Plugin\Subtaskdate\Api\Procedure\NewSubtaskProcedure;
 use PicoDb\Table;
 use PicoDb\Database;
@@ -47,6 +48,20 @@ class Plugin extends Base
         // API 
         $this->api->getProcedureHandler()->withClassAndMethod('createSubtaskdd', new NewSubtaskProcedure($this->container), 'createSubtaskdd');
         $this->api->getProcedureHandler()->withClassAndMethod('updateSubtaskdd', new NewSubtaskProcedure($this->container), 'updateSubtaskdd');
+        
+        //Events
+        $container = $this->container;
+
+        $this->hook->on('controller:calendar:user:events', function($user_id, $start, $end) use ($container) {
+            $model = new SubtaskCalendarModel($container);
+            return $model->getUserCalendarEvents($user_id, $start, $end); // Return new events
+        });
+        
+        $this->hook->on('controller:calendar:project:events', function($project_id, $start, $end) use ($container) {
+            $model = new SubtaskCalendarModel($container);
+            return $model->getProjectCalendarEvents($project_id, $start, $end); // Return new events
+        });
+        
     }
     public function onStartup()
     {
@@ -81,7 +96,7 @@ class Plugin extends Base
 
     public function getPluginVersion()
     {
-        return '1.0.5';
+        return '1.1.0';
     }
 
     public function getPluginHomepage()
