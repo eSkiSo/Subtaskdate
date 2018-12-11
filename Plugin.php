@@ -38,8 +38,14 @@ class Plugin extends Base
         $this->template->hook->attach('template:subtask:table:rows', 'Subtaskdate:subtask/table_rows');
 
         //Dashboard - Removed after 1.0.41
-        //$this->template->hook->attach('template:dashboard:subtasks:header:before-timetracking', 'Subtaskdate:subtask/table_header');
-        //$this->template->hook->attach('template:dashboard:subtasks:rows', 'Subtaskdate:subtask/table_rows');
+        $wasmaster = APP_VERSION;
+        
+        if (strpos(APP_VERSION, 'master') !== false && file_exists('ChangeLog')) { $wasmaster = trim(file_get_contents('ChangeLog', false, null, 8, 6), ' '); }
+        
+        if (version_compare(APP_VERSION, '1.0.40') <= 0 || version_compare($wasmaster, '1.0.40') <= 0) { 
+          $this->template->hook->attach('template:dashboard:subtasks:header:before-timetracking', 'Subtaskdate:subtask/table_header');
+          $this->template->hook->attach('template:dashboard:subtasks:rows', 'Subtaskdate:subtask/table_rows');
+        }
 
         //Board Tooltip
         $this->template->hook->attach('template:board:tooltip:subtasks:header:before-assignee', 'Subtaskdate:subtask/table_header');
@@ -96,7 +102,7 @@ class Plugin extends Base
 
     public function getPluginVersion()
     {
-        return '1.1.0';
+        return '1.1.1';
     }
 
     public function getPluginHomepage()
