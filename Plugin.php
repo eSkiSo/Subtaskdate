@@ -42,7 +42,7 @@ class Plugin extends Base
         
         if (strpos(APP_VERSION, 'master') !== false && file_exists('ChangeLog')) { $wasmaster = trim(file_get_contents('ChangeLog', false, null, 8, 6), ' '); }
         
-        if (version_compare(APP_VERSION, '1.0.40') <= 0 || version_compare($wasmaster, '1.0.40') <= 0) { 
+        if (version_compare($wasmaster, '1.0.40') <= 0) { 
           $this->template->hook->attach('template:dashboard:subtasks:header:before-timetracking', 'Subtaskdate:subtask/table_header');
           $this->template->hook->attach('template:dashboard:subtasks:rows', 'Subtaskdate:subtask/table_rows');
         }
