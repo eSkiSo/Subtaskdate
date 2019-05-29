@@ -77,7 +77,7 @@ class SubtaskCalendarModel extends Base
         foreach ($alltasks as $lonetask) {
         
          $foundtasks = $this->db->table(self::TABLE)
-            ->eq('task_id', $lonetask['id'])
+            ->eq('task_id', $lonetask)
             ->gte('due_date', strtotime($start))
             ->lte('due_date', strtotime($end))
             ->neq('status', 2)
