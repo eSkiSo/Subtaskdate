@@ -5,7 +5,7 @@ namespace Kanboard\Plugin\Subtaskdate;
 use Kanboard\Core\Plugin\Base;
 use Kanboard\Core\Translator;
 use Kanboard\Model\TaskModel;
-use Kanboard\Plugin\Subtaskdate\Filter\SubTaskDueDateFilter; 
+use Kanboard\Plugin\Subtaskdate\Filter\SubTaskDueDateFilter;
 use Kanboard\Model\SubtaskModel;
 use Kanboard\Plugin\Subtaskdate\Model\SubtaskCalendarModel;
 use Kanboard\Plugin\Subtaskdate\Api\Procedure\NewSubtaskProcedure;
@@ -13,13 +13,12 @@ use PicoDb\Table;
 use PicoDb\Database;
 use JsonRPC\Server;
 
-
 class Plugin extends Base
 {
     public function initialize()
     {
         //Filter
-        $this->container->extend('taskLexer', function($taskLexer, $c) {
+        $this->container->extend('taskLexer', function ($taskLexer, $c) {
             $taskLexer->withFilter(SubTaskDueDateFilter::getInstance()->setDatabase($c['db'])
                                                                       ->setDateParser($c['dateParser']));
             return $taskLexer;
@@ -40,35 +39,36 @@ class Plugin extends Base
         //Dashboard - Removed after 1.0.41
         $wasmaster = str_replace('v', '', APP_VERSION);
         $wasmaster = preg_replace('/\s+/', '', $wasmaster);
-        
-        if (strpos(APP_VERSION, 'master') !== false || strpos(APP_VERSION, 'main') !== false && file_exists('ChangeLog')) { $wasmaster = trim(file_get_contents('ChangeLog', false, null, 8, 6), ' '); }
-        
-        if (version_compare($wasmaster, '1.0.40') <= 0) { 
-          $this->template->hook->attach('template:dashboard:subtasks:header:before-timetracking', 'Subtaskdate:subtask/table_header');
-          $this->template->hook->attach('template:dashboard:subtasks:rows', 'Subtaskdate:subtask/table_rows');
+
+        if (strpos(APP_VERSION, 'master') !== false || strpos(APP_VERSION, 'main') !== false && file_exists('ChangeLog')) {
+            $wasmaster = trim(file_get_contents('ChangeLog', false, null, 8, 6), ' ');
+        }
+
+        if (version_compare($wasmaster, '1.0.40') <= 0) {
+            $this->template->hook->attach('template:dashboard:subtasks:header:before-timetracking', 'Subtaskdate:subtask/table_header');
+            $this->template->hook->attach('template:dashboard:subtasks:rows', 'Subtaskdate:subtask/table_rows');
         }
 
         //Board Tooltip
         $this->template->hook->attach('template:board:tooltip:subtasks:header:before-assignee', 'Subtaskdate:subtask/table_header');
         $this->template->hook->attach('template:board:tooltip:subtasks:rows', 'Subtaskdate:subtask/table_rows');
-        
-        // API 
+
+        // API
         $this->api->getProcedureHandler()->withClassAndMethod('createSubtaskdd', new NewSubtaskProcedure($this->container), 'createSubtaskdd');
         $this->api->getProcedureHandler()->withClassAndMethod('updateSubtaskdd', new NewSubtaskProcedure($this->container), 'updateSubtaskdd');
-        
+
         //Events
         $container = $this->container;
 
-        $this->hook->on('controller:calendar:user:events', function($user_id, $start, $end) use ($container) {
+        $this->hook->on('controller:calendar:user:events', function ($user_id, $start, $end) use ($container) {
             $model = new SubtaskCalendarModel($container);
             return $model->getUserCalendarEvents($user_id, $start, $end); // Return new events
         });
-        
-        $this->hook->on('controller:calendar:project:events', function($project_id, $start, $end) use ($container) {
+
+        $this->hook->on('controller:calendar:project:events', function ($project_id, $start, $end) use ($container) {
             $model = new SubtaskCalendarModel($container);
             return $model->getProjectCalendarEvents($project_id, $start, $end); // Return new events
         });
-        
     }
     public function onStartup()
     {
@@ -82,9 +82,9 @@ class Plugin extends Base
     }
 
      public function applyDateFilter(Table $query)
-    {
-        $query->lte(SubtaskModel::TABLE.'.due_date', time());
-    }
+     {
+         $query->lte(SubtaskModel::TABLE.'.due_date', time());
+     }
 
     public function getPluginName()
     {

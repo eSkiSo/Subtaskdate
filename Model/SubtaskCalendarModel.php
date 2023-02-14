@@ -20,7 +20,7 @@ class SubtaskCalendarModel extends Base
      *
      * @var string
      */
-    const TABLE = 'subtasks';
+    public const TABLE = 'subtasks';
     /**
      * Get query to fetch all users
      *
@@ -30,26 +30,25 @@ class SubtaskCalendarModel extends Base
      */
     public function getUserCalendarEvents($user_id, $start, $end)
     {
-         $tasks = $this->db->table(self::TABLE)
-            ->eq('user_id', $user_id)
-            ->gte('due_date', strtotime($start))
-            ->lte('due_date', strtotime($end))
-            ->neq('status', 2)
-            ->columns('task_id', 'title', 'due_date')
-            ->findAll();
-            
-         $events = array();
+        $tasks = $this->db->table(self::TABLE)
+           ->eq('user_id', $user_id)
+           ->gte('due_date', strtotime($start))
+           ->lte('due_date', strtotime($end))
+           ->neq('status', 2)
+           ->columns('task_id', 'title', 'due_date')
+           ->findAll();
 
-         foreach ($tasks as $task) {
-         
-         $fulltask = $this->taskFinderModel->getById($task['task_id']);
-         
-         $startDate = new DateTime();
-         $startDate->setTimestamp($task['due_date']);
-         
-         $allDay = $startDate == $startDate && $startDate->format('Hi') == '0000';
-         $format = $allDay ? 'Y-m-d' : 'Y-m-d\TH:i:s';
-            
+        $events = array();
+
+        foreach ($tasks as $task) {
+            $fulltask = $this->taskFinderModel->getById($task['task_id']);
+
+            $startDate = new DateTime();
+            $startDate->setTimestamp($task['due_date']);
+
+            $allDay = $startDate == $startDate && $startDate->format('Hi') == '0000';
+            $format = $allDay ? 'Y-m-d' : 'Y-m-d\TH:i:s';
+
             $events[] = array(
                 'timezoneParam' => $this->timezoneModel->getCurrentTimezone(),
                 'id' => $task['task_id'],
@@ -63,43 +62,40 @@ class SubtaskCalendarModel extends Base
                 'editable' => $allDay,
                 'allday' => $allDay,
             );
-         }
-         
-         return $events;
+        }
+
+        return $events;
     }
-    
+
     public function getProjectCalendarEvents($project_id, $start, $end)
     {
         $alltasks = $this->taskFinderModel->getAllIds($project_id);
-        
-        $tasks = array();
-        
-        foreach ($alltasks as $lonetask) {
-        
-         $foundtasks = $this->db->table(self::TABLE)
-            ->eq('task_id', $lonetask)
-            ->gte('due_date', strtotime($start))
-            ->lte('due_date', strtotime($end))
-            ->neq('status', 2)
-            ->columns('task_id', 'title', 'due_date')
-            ->findAll();
-                   
-         $tasks = array_merge($tasks, $foundtasks);
-                        
-        }
-            
-         $events = array();
 
-         foreach ($tasks as $task) {
-         
-         $fulltask = $this->taskFinderModel->getById($task['task_id']);
-         
-         $startDate = new DateTime();
-         $startDate->setTimestamp($task['due_date']);
-         
-         $allDay = $startDate == $startDate && $startDate->format('Hi') == '0000';
-         $format = $allDay ? 'Y-m-d' : 'Y-m-d\TH:i:s';
-            
+        $tasks = array();
+
+        foreach ($alltasks as $lonetask) {
+            $foundtasks = $this->db->table(self::TABLE)
+               ->eq('task_id', $lonetask)
+               ->gte('due_date', strtotime($start))
+               ->lte('due_date', strtotime($end))
+               ->neq('status', 2)
+               ->columns('task_id', 'title', 'due_date')
+               ->findAll();
+
+            $tasks = array_merge($tasks, $foundtasks);
+        }
+
+        $events = array();
+
+        foreach ($tasks as $task) {
+            $fulltask = $this->taskFinderModel->getById($task['task_id']);
+
+            $startDate = new DateTime();
+            $startDate->setTimestamp($task['due_date']);
+
+            $allDay = $startDate == $startDate && $startDate->format('Hi') == '0000';
+            $format = $allDay ? 'Y-m-d' : 'Y-m-d\TH:i:s';
+
             $events[] = array(
                 'timezoneParam' => $this->timezoneModel->getCurrentTimezone(),
                 'id' => $task['task_id'],
@@ -113,8 +109,8 @@ class SubtaskCalendarModel extends Base
                 'editable' => $allDay,
                 'allday' => $allDay,
             );
-         }
-         
-         return $events;
+        }
+
+        return $events;
     }
 }

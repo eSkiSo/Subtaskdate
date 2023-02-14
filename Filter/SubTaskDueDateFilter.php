@@ -17,7 +17,7 @@ use PicoDb\Database;
  */
 class SubTaskDueDateFilter extends BaseDateFilter implements FilterInterface
 {
-const TABLE = 'subtasks';
+    public const TABLE = 'subtasks';
     /**
      * Database object
      *
@@ -55,17 +55,16 @@ const TABLE = 'subtasks';
      * @return FilterInterface
      */
     public function apply()
-    {        
+    {
         if ($this->value == "none") {
             $duedate = $this->db
             ->table(self::TABLE)
             ->eq('due_date', 0)
             ->findAllByColumn('task_id');
         } else {
-            
             $method = $this->parseOperator();
             $timestamp = $this->dateParser->getTimestampFromIsoFormat($this->value);
-            
+
             if ($method !== '') {
                 $duedate = $this->db
                 ->table(self::TABLE)
@@ -83,6 +82,10 @@ const TABLE = 'subtasks';
                 ->findAllByColumn('task_id');
             }
         }
-        if (isset($duedate) && !empty($duedate)) { return $this->query->in(TaskModel::TABLE.'.id', $duedate); } else { return $this->query->in(TaskModel::TABLE.'.id', [0]); }
+        if (isset($duedate) && !empty($duedate)) {
+            return $this->query->in(TaskModel::TABLE.'.id', $duedate);
+        } else {
+            return $this->query->in(TaskModel::TABLE.'.id', [0]);
+        }
     }
 }
