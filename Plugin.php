@@ -38,9 +38,10 @@ class Plugin extends Base
         $this->template->hook->attach('template:subtask:table:rows', 'Subtaskdate:subtask/table_rows');
 
         //Dashboard - Removed after 1.0.41
-        $wasmaster = APP_VERSION;
+        $wasmaster = str_replace('v', '', APP_VERSION);
+        $wasmaster = preg_replace('/\s+/', '', $wasmaster);
         
-        if (strpos(APP_VERSION, 'master') !== false && file_exists('ChangeLog')) { $wasmaster = trim(file_get_contents('ChangeLog', false, null, 8, 6), ' '); }
+        if (strpos(APP_VERSION, 'master') !== false || strpos(APP_VERSION, 'main') !== false && file_exists('ChangeLog')) { $wasmaster = trim(file_get_contents('ChangeLog', false, null, 8, 6), ' '); }
         
         if (version_compare($wasmaster, '1.0.40') <= 0) { 
           $this->template->hook->attach('template:dashboard:subtasks:header:before-timetracking', 'Subtaskdate:subtask/table_header');
